@@ -26,7 +26,7 @@ Es fundamental que cada disciplina suba y organice su trabajo en las carpetas co
 - 📁 **Desarrollo**
 - 📁 **Mercadeo**
 - 📁 **Diseño**
-- 📁 **Resumen Ejecutivo**: Documento que sintetiza el proyecto, su propósito, resultados esperados e impacto.
+- 📁 **Resumen Ejecutivo**
 
 > 🔥 Recuerda: Mantener todo organizado facilitará la evaluación de los jueces y demostrará el esfuerzo de tu equipo.
 
