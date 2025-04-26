@@ -22,4 +22,6 @@ En esta sección se debe subir **el resumen general del proyecto**, que debe sin
 
 ---
 
+> Tienes solo 5 minutos para enamorar, emocionar y convencer. Elige sabiamente qué mostrar. Deja que tu pasión y tu estrategia hablen más fuerte que las palabras.
+
 ¡Éxito en la presentación de su proyecto! 🚀
