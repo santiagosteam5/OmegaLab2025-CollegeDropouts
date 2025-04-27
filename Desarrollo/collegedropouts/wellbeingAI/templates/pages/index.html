@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Create Classes</title>
+    <title>Testing site</title>
     <script>
         async function createClasses() {
             const response = await fetch('/createclasses/', {
@@ -26,9 +26,52 @@
                 alert('Error: ' + JSON.stringify(data));
             }
         }
+
+        async function generateSummary() {
+            const response = await fetch('', {  // '' = mismo URL
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    action: 'generate_summary'
+                })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                document.getElementById('summary_result').innerText = data.summary;
+            } else {
+                alert('Error: ' + JSON.stringify(data));
+            }
+        }
     </script>
 </head>
 <body>
     <button onclick="createClasses()">Create Classes</button>
+
+    <h1>Upload Files to Gemini API</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="file">Choose files:</label>
+        <input type="file" id="file" name="file" multiple required>
+        <button type="submit">Upload</button>
+    </form>
+
+    <h2>Archivos Subidos:</h2>
+    <ul>
+        {% for uri in uris %}
+            <li>{{ uri }}</li>
+        {% endfor %}
+    </ul>
+
+    {% if uris %}
+        <button onclick="generateSummary()">Generar Resumen de los Archivos</button>
+    {% endif %}
+
+    <h2>Resultado del Resumen:</h2>
+    <div id="summary_result">
+        {{ resumen }}
+    </div>
 </body>
 </html>

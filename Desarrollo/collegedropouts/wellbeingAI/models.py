@@ -16,6 +16,14 @@ class Scores(models.Model):
     def __str__(self):
         return f"{self.student_profile} - {self.course} - {self.score}"
 
+class Grade(models.Model):
+    grade = models.FloatField()
+    student_profile = models.ForeignKey(StudentProfile, on_delete=models.CASCADE)
+    course = models.ForeignKey('Course', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.student_profile} - {self.course} - {self.grade}"
+
 class Course(models.Model):
     course_name = models.CharField(max_length=100)
     course_code = models.CharField(max_length=10)

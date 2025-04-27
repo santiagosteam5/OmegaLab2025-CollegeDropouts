@@ -1,21 +1,73 @@
 from django.shortcuts import render
 from django.views import View
-from django.contrib.auth.models import User
 from rest_framework.parsers import JSONParser
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .utils import *
 from .models import *
-from datetime import date
 from .serializers import *
+import requests
+from django.core.files.storage import FileSystemStorage
+import google.generativeai as genai
+import json
 
 # Create your views here.
+
+genai.configure(api_key="AIzaSyCmL2nc7fshoheuAdErv5D0koJedvqv21k")
+
+model = genai.GenerativeModel('gemini-1.5-pro')
 
 class IndexTestView(View):
     template_name = 'pages/index.html'
 
     def get(self, request):
-        return render(request, self.template_name, {})
+        uris = request.session.get('uploaded_contents', [])
+        resumen = request.session.get('generated_summary', '')
+        return render(request, self.template_name, {
+            'uris': uris,
+            'resumen': resumen,
+        })
+
+    def post(self, request):
+        try:
+            model = genai.GenerativeModel('gemini-1.5-pro')  # Ahora siempre lo inicializas
+
+            if request.content_type == 'application/json':
+                data = json.loads(request.body)
+                action = data.get('action')
+
+                if action == 'generate_summary':
+                    uploaded_contents = request.session.get('uploaded_contents', [])
+                    if not uploaded_contents:
+                        return JsonResponse({'error': 'No contents found to process.'}, status=400)
+
+                    # Armar el prompt concatenando todos los contenidos
+                    prompt = " ".join(uploaded_contents)
+                    prompt += " Based on the information, identify students at risk of dropping out due to low attendance or low grades, and suggest possible action plans."
+
+                    response = model.generate_content([prompt])
+                    
+                    summary = response.text
+                    request.session['generated_summary'] = summary
+
+                    return JsonResponse({'summary': summary})
+
+            else:
+                # Procesar subida de archivos
+                uploaded_files = request.FILES.getlist('file')
+                uploaded_contents = []
+
+                for uploaded_file in uploaded_files:
+                    content = uploaded_file.read().decode('utf-8')  # Leer archivo como texto
+                    uploaded_contents.append(content)
+
+                request.session['uploaded_contents'] = uploaded_contents
+                request.session['generated_summary'] = ''
+
+                return JsonResponse({'message': 'Files uploaded successfully'})
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
     
 @csrf_exempt
 def createclasses(request):
