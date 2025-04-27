@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Classes</title>
+    <script>
+        async function createClasses() {
+            const response = await fetch('/createclasses/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    start_date: '2025-01-20',
+                    weekday: 'Monday',
+                    weeks: 10,
+                    course_id: 1,
+                    start_time: '09:00:00',
+                    end_time: '10:30:00'
+                })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                alert('Classes created successfully: ' + JSON.stringify(data));
+            } else {
+                alert('Error: ' + JSON.stringify(data));
+            }
+        }
+    </script>
+</head>
+<body>
+    <button onclick="createClasses()">Create Classes</button>
+</body>
+</html>
