@@ -9,7 +9,7 @@ La arquitectura de Fry ha sido diseñada bajo un enfoque de microservicios y esc
 
 ### Diagramas
 
-![Diagrama de Arquitectura](Docs/architecture_diagram.jpg)
+![Diagrama de Arquitectura](architecture_diagram.jpg)
 
 ### Principios de Diseño
 
