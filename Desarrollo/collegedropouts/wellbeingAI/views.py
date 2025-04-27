@@ -10,13 +10,17 @@ import requests
 from django.core.files.storage import FileSystemStorage
 import google.generativeai as genai
 import json
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
-genai.configure(api_key="AIzaSyCmL2nc7fshoheuAdErv5D0koJedvqv21k")
+genai.configure(api_key="Gemini api key")
 
 model = genai.GenerativeModel('gemini-1.5-pro')
 
+
+@method_decorator(csrf_exempt, name='dispatch')
 class IndexTestView(View):
     template_name = 'pages/index.html'
 
